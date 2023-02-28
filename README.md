@@ -7,8 +7,10 @@ You can find more about this course [here](https://www.nfactorial.school/nfactor
 ## Usage
 
 ```bash
-npm install
-npm start
+git clone ....
+cd ...
+npm i
+npm run dev
 
 ```
 
