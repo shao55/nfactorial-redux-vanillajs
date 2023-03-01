@@ -1,5 +1,5 @@
 import intialProducts from "./api/products.json";
-import { addToCart } from "./actions";
+import { addToCart, checkOut } from "./actions";
 import { getState, subscribe } from "./store";
 
 import "./index.css";
@@ -9,6 +9,10 @@ subscribe(() => {
 
   console.log(getState().products);
   const cart = document.getElementById("cart");
+
+  // while (cart.lastChild) {
+  //   cart.removeChild(cart.lastChild);
+  // }
 
   cartProducts.forEach((product) => {
     if (product.inCart !== 0) {
@@ -22,6 +26,16 @@ subscribe(() => {
       cartelem.innerText = `${product.title} - $${product.price} quantity: ${product.inCart}`;
 
       cart.appendChild(cartelem);
+      // Добавляем другой случай если в объекте product, свойство inCart == 0
+    } else if (product.inCart == 0) {
+      // Дотягиваемся до элементов в cart
+      let cartelem = document.getElementById(`cartelem-${product.id}`);
+      // Проверка на логику наличия элементов в Cart
+      if (cartelem) {
+        console.log("Если ты меня видишь, значит cartelem = true");
+        // Удаляем элементы
+        cart.removeChild(cartelem)
+      }
     }
 
     const productElem = document.getElementById(`productelem-${product.id}`);
@@ -60,4 +74,14 @@ document
 
 function handleButtonClicked(event) {
   addToCart(event.target.id);
+}
+
+// Дотягиваемся до кнопки с id = checkout и при клике запускаем функцию
+document
+  .getElementById("checkout")
+  .addEventListener("click", handleButtonClickedCheckout);
+
+// Функция вызова action 
+function handleButtonClickedCheckout() {
+  checkOut();
 }
